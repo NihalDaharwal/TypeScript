@@ -45,7 +45,7 @@ class youtuber {
   getFirstname() {
     //
     console.log(
-      "my nameis " + this.firstname + this.lastname + "my age is " + this.age
+      "my name is " + this.firstname + this.lastname + "my age is " + this.age
     );
   }
 
@@ -65,7 +65,7 @@ class youtuber {
 // syntax
 //var object_name = new class_name();
 
-// let ytobj = new youtuber();     //when constructer is user error shows in this line
+// let ytobj = new youtuber();     //when constructor is user error shows in this line
 // ytobj.firstname = "nihal";
 // ytobj.lastname = "daharwal";
 // ytobj.age = 25;
