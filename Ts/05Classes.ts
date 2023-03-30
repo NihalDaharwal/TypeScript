@@ -45,7 +45,7 @@ class youtuber {
   getFirstname() {
     //
     console.log(
-      "my name is " + this.firstname + this.lastname + "my age is " + this.age
+      "hello my name is" + this.firstname + this.lastname + "my age is " + this.age
     );
   }
 
