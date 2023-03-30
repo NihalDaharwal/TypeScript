@@ -1,4 +1,4 @@
-//typescript is object orinted javascript
+//typescript is object oriented javascript
 //a class in the term of OOP is a blue print for creating objects
 
 //a class encapsulates data for the objects
@@ -12,16 +12,16 @@ class class_name {
   //class scope
 }
 
-//a class definition can include the folling
-// Field:- a feild is any variable declared in the class
-// Field  represent data reletd to objects
+//a class definition can include the following
+// Field:- a field is any variable declared in the class
+// Field  represent data related to objects
 
-// constructor :- resonsible for allocationg memory for the objects of the class
+// constructor :- responsible for allocating memory for the objects of the class
 
-//functions :- functions reprents actions an objects can take
-//they are also at times  reffered to as methods
+//functions :- functions represents actions an objects can take
+//they are also at times  referred to as methods
 
-// the components put toghter termed as the data member of the class
+// the components put together termed as the data member of the class
 
 //cohesive
 
