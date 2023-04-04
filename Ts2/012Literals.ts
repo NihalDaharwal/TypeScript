@@ -16,3 +16,6 @@ function combine1(
 }
 console.warn(combine1(9, 8, "as-number"));
 console.warn(combine1("hello", "vela", "as-number"));
+
+// let  type: "as-number" | "as-string" =10; // show error
+let type: "as-number" | "as-string" = "as-string";
