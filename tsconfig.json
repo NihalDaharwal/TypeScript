@@ -91,4 +91,5 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
   "exclude": ["Ts/05Classes.ts", "Ts2"]
+  // "include": ["Ts/05Classes.ts", "Ts2"]
 }
