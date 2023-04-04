@@ -25,8 +25,11 @@ add2(5, 5);
 
 const a = 5;
 const b = "hell0";
+const c = undefined;
 function add3(): number {
   return a;
   //   return b; // will show error
 }
 add3();
+
+// yes a function type can be undefined
