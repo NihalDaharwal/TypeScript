@@ -17,3 +17,13 @@ let item1: string;
 // item = data1; // will show error
 
 //use unknown instead of any
+
+let data2: unknown;
+data1 = 20;
+data1 = "hello";
+
+let item2: string;
+
+if (typeof data2 === "string") {
+  item2 = data2;
+}
