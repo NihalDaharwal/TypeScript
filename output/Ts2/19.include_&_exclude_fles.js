@@ -8,3 +8,6 @@
 // */test.ts is used for specific file whole project , file name can be anything
 // include to for specific file
 // "include": ["Ts/05Classes.ts", "Ts2"]
+//same as root dir
+//but problem is that you have to exclude or include the file
+// you can remove comments also
