@@ -1,0 +1,98 @@
+A type is the concept of describing which values can be passed to fn and which will crash. 
+JavaScript only truly provides dynamic typing - running the code to see what happens.
+
+The alternative is to use a static type system to make predictions about what code is expected before it runs.
+
+Static type-checking
+
+const message = "hello!";
+ 
+message();
+This expression is not callable.
+ Type 'String' has no call signature
+
+
+Non-exception Failures
+
+  const user = {
+    name: "Daniel",
+    age: 26,
+  };
+  user.location;
+  Property 'location' does not exist on type '{ name: string; age: number; }'.
+
+
+  Types for Tooling
+
+  tsc, the TypeScript compiler
+
+  npm install -g typescript
+
+  So TypeScript doesn’t get in your way. Of course, over time, you may want to be a bit more defensive against mistakes, and make TypeScript act a bit more strictly. In that case, you can use the noEmitOnError compiler option. Try changing your hello.ts file and running tsc with that flag:
+
+  tsc --noEmitOnError hello.ts
+
+Emitting with Errors
+
+Explicit Types
+Up until now, we haven’t told TypeScript what person or date are. Let’s edit the code to tell TypeScript that person is a string, and that date should be a Date object. We’ll also use the toDateString() method on date.
+
+function greet(person: string, date: Date) {
+    console.log(`Hello ${person}, today is ${date.toDateString()}!`);
+  };
+
+
+  function greet(person: string, date: Date) {
+    console.log(`Hello ${person}, today is ${date.toDateString()}!`);
+  }
+   
+
+  greet("Maddison", new Date());
+
+
+Keep in mind, we don’t always have to write explicit type annotations. In many cases, TypeScript can even just infer (or “figure out”) the types for us even if we omit them.
+
+let msg = "hello there!";
+    
+let msg: string
+
+
+# //////////////////
+
+Erased Types
+Let’s take a look at what happens when we compile the above function greet with tsc to output JavaScript:
+
+"use strict";
+function greet(person, date) {
+    console.log("Hello ".concat(person, ", today is ").concat(date.toDateString(), "!"));
+}
+greet("Maddison", new Date());
+ 
+Try
+Notice two things here:
+
+Our person and date parameters no longer have type annotations.
+Our “template string” - that string that used backticks (the ` character) - was converted to plain strings with concatenations.
+
+Remember: Type annotations never change the runtime behavior of your program.
+Downleveling
+One other difference from the above was that our template string was rewritten from
+
+`Hello ${person}, today is ${date.toDateString()}!`;
+
+to
+
+"Hello " + person + ", today is " + date.toDateString() + "!";
+
+Strictness
+
+TypeScript has several type-checking strictness flags that can be turned on or off, and all of our examples will be written with all of them enabled unless otherwise stated. The strict flag in the CLI, or "strict": true in a tsconfig.json toggles them all on simultaneously, but we can opt out of them individually. The two biggest ones you should know about are noImplicitAny and strictNullChecks.
+
+
+noImplicitAny
+Recall that in some places, TypeScript doesn’t try to infer types for us and instead falls back to the most lenient type: any. This isn’t the worst thing that can happen - after all, falling back to any is just the plain JavaScript experience anyway.
+
+However, using any often defeats the purpose of using TypeScript in the first place. The more typed your program is, the more validation and tooling you’ll get, meaning you’ll run into fewer bugs as you code. Turning on the noImplicitAny flag will issue an error on any variables whose type is implicitly inferred as any.
+
+strictNullChecks
+strictNullChecks flag makes handling null and undefined more explicit, and spares us from worrying about whether we forgot to handle null and undefined.

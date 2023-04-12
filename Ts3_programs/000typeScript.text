@@ -1,0 +1,351 @@
+#todo :- It’s a statically-typed superset of JavaScript that compiles to plain JavaScript. 
+
+It do not runs directly on any browser, code first converted into js code and then run on browser
+That means all valid JavaScript code is also TypeScript code. 
+It offers advanced features such as IntelliSense, code completion, safe refactorings, etc.
+
+#todo :- TypeScript checks a program for errors before execution, and does so based on the kinds of values, making it a static type checker.
+
+However, TypeScript is a typed superset, meaning that it adds rules about how different kinds of values can be used
+
+Syntax
+TypeScript is a language that is a superset of JavaScript: JS syntax is therefore legal TS. Syntax refers to the way we write text to form a program. For example, this code has a syntax error because it’s missing a ):
+
+let a = (4
+')' expected.
+
+
+Types
+However, TypeScript is a typed superset, meaning that it adds rules about how different kinds of values can be used.
+
+
+Runtime Behavior
+TypeScript is also a programming language that preserves the runtime behavior of JavaScript. For example, dividing by zero in JavaScript produces Infinity instead of throwing a runtime exception. As a principle, TypeScript never changes the runtime behavior of JavaScript code.
+
+This means that if you move code from JavaScript to TypeScript, it is guaranteed to run the same way, even if TypeScript thinks that the code has type errors.
+Keeping the same runtime behavior as JavaScript is a foundational promise of TypeScript because it means you can easily transition between the two languages without worrying about subtle differences that might make your program stop working.
+
+
+Erased Types
+Roughly speaking, once TypeScript’s compiler is done with checking your code, it erases the types to produce the resulting “compiled” code. This means that once your code is compiled, the resulting plain JS code has no type information.
+
+This also means that TypeScript never changes the behavior of your program based on the types it inferred.
+
+ypeScript without learning JavaScript! TypeScript shares syntax and runtime behavior with JavaScript, so anything you learn about JavaScript is helping you learn TypeScript at the same time.
+
+TypeScript is JavaScript’s runtime with a compile-time type checker
+
+Types by Inference
+TypeScript knows the JavaScript language and will generate types for you in many cases. For example in creating a variable and assigning it to a particular value, TypeScript will use the value as its type.
+
+Types by Inference
+TypeScript knows the JavaScript language and will generate types for you in many cases. For example in creating a variable and assigning it to a particular value, TypeScript will use the value as its type.
+
+let helloWorld = "Hello World";
+
+
+Defining Types
+There is already a small set of primitive types available in JavaScript: boolean, bigint, null, number, string, symbol, and undefined, which you can use in an interface. TypeScript extends this list with a few more, such as any (allow anything), unknown (ensure someone using this type declares what the type is), never (it’s not possible that this type could happen), and void (a function which returns undefined or has no return value).
+
+You’ll see that there are two syntaxes for building types: Interfaces and Types. You should prefer interface. Use type when you need specific features.
+
+
+
+Composing Types
+With TypeScript, you can create complex types by combining simple ones. 
+There are two popular ways to do so: with unions, and with generics.
+
+
+
+1.Unions
+With a union, you can declare that a type could be one of many types. For example, you can describe a boolean type as being either true or false:
+
+type MyBool = true | false;
+
+Note: If you hover over MyBool above, you’ll see that it is classed as boolean. That’s a property of the Structural Type System. More on this below.
+
+A popular use-case for union types is to describe the set of string or number literals that a value is allowed to be:
+
+type WindowStates = "open" | "closed" | "minimized";
+type LockStates = "locked" | "unlocked";
+type PositiveOddNumbersUnderTen = 1 | 3 | 5 | 7 | 9;
+Try
+Unions provide a way to handle different types too. For example, you may have a function that takes an array or a string:
+
+function getLength(obj: string | string[]) {
+  return obj.length;
+}
+
+
+To learn the type of a variable, use typeof:
+
+Type	Predicate
+string	typeof s === "string"
+number	typeof n === "number"
+boolean	typeof b === "boolean"
+undefined	typeof undefined === "undefined"
+function	typeof f === "function"
+array	Array.isArray(a)
+
+
+
+2.Generics
+Generics provide variables to types. A common example is an array. 
+An array without generics could contain anything. An array with generics can describe the values that the array contains.
+
+type StringArray = Array<string>;
+type NumberArray = Array<number>;
+type ObjectWithNameArray = Array<{ name: string }>;
+
+You can declare your own types that use generics:
+
+interface Backpack<Type> {
+  add: (obj: Type) => void;
+  get: () => Type;
+}
+ 
+// This line is a shortcut to tell TypeScript there is a
+// constant called `backpack`, and to not worry about where it came from.
+declare const backpack: Backpack<string>;
+ 
+// object is a string, because we declared it above as the variable part of Backpack.
+const object = backpack.get();
+ 
+// Since the backpack variable is a string, you can't pass a number to the add function.
+backpack.add(23);
+Argument of type 'number' is not assignable to parameter of type 'string'
+
+# ///////////////////////////
+# not to learn from here to
+
+Structural Type System
+
+One of TypeScript’s core principles is that type checking focuses on the shape that values have. This is sometimes called “duck typing” or “structural typing”.
+
+n a structural type system, if two objects have the same shape, they are considered to be of the same type.
+
+interface Point {
+  x: number;
+  y: number;
+}
+ 
+function logPoint(p: Point) {
+  console.log(`${p.x}, ${p.y}`);
+}
+ 
+// logs "12, 26"
+const point = { x: 12, y: 26 };
+logPoint(point);
+
+
+
+The point variable is never declared to be a Point type. However, TypeScript compares the shape of point to the shape of Point in the type-check. They have the same shape, so the code passes.
+
+The shape-matching only requires a subset of the object’s fields to match.
+
+const point3 = { x: 12, y: 26, z: 89 };
+logPoint(point3); // logs "12, 26"
+ 
+const rect = { x: 33, y: 3, width: 30, height: 80 };
+logPoint(rect); // logs "33, 3"
+ 
+const color = { hex: "#187ABF" };
+logPoint(color);
+Argument of type '{ hex: string; }' is not assignable to parameter of type 'Point'.
+  Type '{ hex: string; }' is missing the following properties from type 'Point': x, y
+Try
+There is no difference between how classes and objects conform to shapes:
+
+class VirtualPoint {
+  x: number;
+  y: number;
+ 
+  constructor(x: number, y: number) {
+    this.x = x;
+    this.y = y;
+  }
+}
+ 
+const newVPoint = new VirtualPoint(13, 56);
+logPoint(newVPoint); // logs "13, 56"
+Try
+If the object or class has all the required properties, TypeScript will say they match, regardless of the implementation details.
+
+
+
+TypeScript has corresponding primitive types for the built-in types:
+
+number
+string
+bigint
+boolean
+symbol
+null
+undefined
+object
+
+Other important TypeScript types
+Type	Explanation
+unknown	the top type.
+never	the bottom type.
+object literal	eg { property: Type }
+void	a subtype of undefined intended for use as a return type.
+T[]	mutable arrays, also written Array<T>
+[T, T]	tuples, which are fixed-length but mutable
+(t: T) => U	functions
+
+
+Notes:
+
+Function syntax includes parameter names. This is pretty hard to get used to!
+
+let fst: (a: any, b: any) => any = (a, b) => a;
+// or more precisely:
+let fst: <T, U>(a: T, b: U) => T = (a, b) => a;
+Object literal type syntax closely mirrors object literal value syntax:
+
+let o: { n: number; xs: object[] } = { n: 1, xs: [] };
+[T, T] is a subtype of T[]. This is different than Haskell, where tuples are not related to lists.
+
+
+Boxed types
+JavaScript has boxed equivalents of primitive types that contain the methods that programmers associate with those types. TypeScript reflects this with, for example, the difference between the primitive type number and the boxed type Number. The boxed types are rarely needed, since their methods return primitives.
+
+(1).toExponential();
+// equivalent to
+Number.prototype.toExponential.call(1);
+
+
+Gradual typing
+TypeScript uses the type any whenever it can’t tell what the type of an expression should be.
+ Compared to Dynamic, calling any a type is an overstatement. 
+ It just turns off the type checker wherever it appears. 
+ For example, you can push any value into an any[] without marking the value in any way:
+
+// with "noImplicitAny": false in tsconfig.json, anys: any[]
+const anys = [];
+anys.push(1);
+anys.push("oh no");
+anys.push({ anything: "goes" });
+
+And you can use an expression of type any anywhere:
+
+anys.map(anys[1]); // oh no, "oh no" is not a function
+any is contagious, too — if you initialize a variable with an expression of type any, the variable has type any too.
+
+let sepsis = anys[0] + anys[1]; // this could mean anything
+To get an error when TypeScript produces an any, use "noImplicitAny": true, or "strict": true in tsconfig.json.
+
+he following types have built-in predicates:
+
+Type	Predicate
+string	typeof s === "string"
+number	typeof n === "number"
+bigint	typeof m === "bigint"
+boolean	typeof b === "boolean"
+symbol	typeof g === "symbol"
+undefined	typeof undefined === "undefined"
+function	typeof f === "function"
+array	Array.isArray(a)
+object	typeof o === "object"
+
+
+Intersections
+In addition to unions, TypeScript also has intersections:
+
+type Combined = { a: number } & { b: string };
+type Conflicting = { a: number } & { a: string };
+Combined has two properties, a and b, just as if they had been written as one object literal type. Intersection and union are recursive in case of conflicts, so Conflicting.a: number & string.
+
+Unit types
+
+
+
+Because TypeScript is structural,
+
+TypeScript additionally has a readonly modifier for properties.
+
+interface Rx {
+  readonly x: number;
+}
+let rx: Rx = { x: 1 };
+rx.x = 12; // error
+You can also use a const-assertion, which operates on arrays and object literals:
+
+let a = [1, 2, 3] as const;
+a.push(102); // error
+a[0] = 101; // error
+However, none of these options are the default, so they are not consistently used in TypeScript code.
+
+
+# to here 
+# ////////////////////////////
+
+TypeScript Tooling in 5 minutes
+
+installing TypeScript
+There are two main ways to get the TypeScript available for your project:
+
+Via npm (the Node.js package manager)
+By installing TypeScript’s Visual Studio plugins
+
+npm install -g typescript
+
+// Boolean
+let isDone: boolean = false;
+
+// Number
+let decimal: number = 6;
+let hex: number = 0xf00d;
+let binary: number = 0b1010;
+let octal: number = 0o744;
+
+// String
+let color: string = "blue";
+color = 'red';
+
+let fullName: string = `Bob Bobbington`;
+let age: number = 37;
+let sentence: string = `Hello, my name is ${fullName}.
+
+I'll be ${age + 1} years old next month.`;
+
+// Array
+let list: number[] = [1, 2, 3];
+let list2: Array<number> = [1, 2, 3];
+
+// Tuple
+let x: [string, number];
+x = ["hello", 10];
+
+// Enum
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+let c: Color = Color.Green;
+
+// Any
+let notSure: any = 4;
+notSure = "maybe a string instead";
+notSure = false;
+
+// Void
+function warnUser(): void {
+  console.log("This is my warning message");
+}
+
+// Null and Undefined
+let u: undefined = undefined;
+let n: null = null;
+
+// Object
+declare function create(o: object | null): void;
+create({ prop: 0 });
+create(null);
+
+// Type assertions
+let someValue: any = "this is a string";
+let strLength: number = (<string>someValue).length;
+let strLength2: number = (someValue as string).length;
